@@ -7,7 +7,11 @@ from telegram import Update
 from telegram.ext import Updater,CallbackContext,Filters
 from telegram.ext import CommandHandler,MessageHandler
 from telegram.error import BadRequest,Conflict,NetworkError
-from config import *
+try:
+    from config import *
+except:
+    print("Please copy config_example.py to config.py and fill in the blanks")
+    sys.exit(0)
 
 LOGLEVEL={0:"DEBUG",1:"INFO",2:"WARN",3:"ERR",4:"FATAL"}
 LOGFILE="log"
@@ -69,6 +73,12 @@ class NotifyBot():
 
 
 if __name__ == '__main__':
-    b = NotifyBot()
-    #b.make_msg("@tokenindices",'test message')
-    b.check_msg()
+    if len(sys.argv)==2 and 'check' in sys.argv[1]:
+        b = NotifyBot()
+        b.check_msg()
+    elif len(sys.argv)==2 and 'test' in sys.argv[1]:
+        b = NotifyBot()
+        b.make_msg("@tokenindices",'This is a test message')
+        b.check_msg()
+    else:
+        print('--check\n--test')
