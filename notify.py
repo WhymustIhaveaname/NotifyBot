@@ -53,7 +53,15 @@ class NotifyBot():
             msg['parse_mode'] = 'HTML'
 
         updater = Updater(TOKEN)
-        updater.bot.sendMessage(msg['chat_id'],msg['text'],parse_mode=msg['parse_mode'])
+
+        # if len(message.split('\n'))<60:
+        #         context.bot.send_message(chat_id=DEVELOPER_ID, text=message, parse_mode='HTML', disable_notification=True)
+        #     else:
+        #         context.bot.send_document(DEVELOPER_ID, message.encode('utf8'), filename="%s.html"%(tb_list[-1]), disable_notification=True)
+        if len(msg['text'])<4000:
+            updater.bot.sendMessage(msg['chat_id'],msg['text'],parse_mode=msg['parse_mode'])
+        else:
+            updater.bot.sendDocument(msg['chat_id'], msg['text'].encode('utf8'))
 
         sent_dir = self.dir+"/sent"
         if not os.path.exists(sent_dir):
